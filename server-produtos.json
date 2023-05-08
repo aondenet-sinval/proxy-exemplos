@@ -1,0 +1,16 @@
+{
+  "produtos": [
+    {
+      "id": 1,
+      "descricao": "Bolsas para viagem tiracolo",
+      "preco": 14.50,
+      "estoque": 200
+    },
+    {
+      "id": 2,
+      "descricao": "Caderno escolar 10 matérias",
+      "preco": 14.50,
+      "estoque": 240
+    }
+  ]
+}

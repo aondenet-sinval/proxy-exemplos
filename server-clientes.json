@@ -1,0 +1,16 @@
+{
+  "clientes": [
+    {
+      "id": 1,
+      "nome": "Maria R. R...",
+      "email": "cliente@email.com",
+      "cidade": "Salvador"
+    },
+    {
+      "id": 2,
+      "nome": "Lusmauro F. F...",
+      "email": "mmauro@email.com",
+      "cidade": "São Paulo"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "servicos": [
+    {
+      "id": 1,
+      "descricao": "Criação de arte em vidros",
+      "preco": 140.53,
+      "tipo": "artesanal"
+    },
+    {
+      "id": 2,
+      "descricao": "Produção de tinta não tóxica",
+      "preco": 14.50,
+      "tipo": "manual"
+    }
+  ]
+}
