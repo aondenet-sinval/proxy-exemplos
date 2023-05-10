@@ -1,24 +1,58 @@
-const express = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+var http = require('http');
+var fs = require('fs');
+var path = require('path');
+const port = 3037
 
+http.createServer(function (request, response) {
+    console.log('request ', request.url);
 
-const app = express();
+    var filePath = '.' + request.url;
+    if (filePath == './') {
+        filePath = './index.html';
+    }
 
+    var extname = String(path.extname(filePath)).toLowerCase();
+    var contentType = 'text/html';
+    var mimeTypes = {
+        '.html': 'text/html',
+        '.js': 'text/javascript',
+        '.appcache': 'text/cache-manifest',
+        '.css': 'text/css',
+        '.json': 'application/json',
+        '.png': 'image/png',
+        '.jpg': 'image/jpg',
+        '.gif': 'image/gif',
+        '.pdf': 'image/pdf',
+        '.wav': 'audio/wav',
+        '.mp4': 'video/mp4',
+        '.woff': 'application/font-woff',
+        '.ttf': 'application/font-ttf',
+        '.eot': 'application/vnd.ms-fontobject',
+        '.otf': 'application/font-otf',
+        '.svg': 'application/image/svg+xml'
+    };
 
-const options = {
-  target: 'http://localhost:3101/clientes', // target host
-  changeOrigin: true, // needed for virtual hosted sites
-  router: {
-    // when request.headers.host == 'dev.localhost:3000',
-    // override target 'http://www.example.org' to 'http://localhost:8000'
-    'localhost:3300/api/clientes' : 'http://localhost:3101/clientes' ,   // host + caminho
-    'localhost:3300/api/produtos' : 'http://localhost:3102/produtos' ,   // host + caminho
-    'localhost:3300/api/servicos' : 'http://localhost:3103/servicos' ,   // host + caminho
-  },
-};
-app.use('/api', createProxyMiddleware(options));
+    contentType = mimeTypes[extname] || 'application/octet-stream';
 
-const PORT = 3300; // defina a porta do servidor proxy express
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+    fs.readFile(filePath, function(error, content) {
+        if (error) {
+            if(error.code == 'ENOENT'){
+                fs.readFile('./404.html', function(error, content) {
+                    response.writeHead(200, { 'Content-Type': contentType });
+                    response.end(content, 'utf-8');
+                });
+            }
+            else {
+                response.writeHead(500);
+                response.end('Contate o admin do site e informe o erro: '+error.code+' ..\n');
+                response.end();
+            }
+        }
+        else {
+            response.writeHead(200, { 'Content-Type': contentType });
+            response.end(content, 'utf-8');
+        }
+    });
+
+}).listen(port);
+console.log(`Servidor frontend rodando em http://localhost:${port}/`);

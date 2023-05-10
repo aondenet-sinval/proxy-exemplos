@@ -28,3 +28,8 @@ Aperte a tecla f5 11 vezes e confira o bloqueio de request.
 Acesse a rota liberada:  
 http://localhost:3300/api/servicos  
 O bloqueio restringe apenas a rota definida.  
+**Adicionando para controle de acesso com cors**  
+Para testar execute os servidores json.  
+Execute: 'npm run cors' e 'npm run front'.  
+Altere no arquivo helmet-limit-cors o host 'http://localhost:3037' e  
+confira o bloqueio.

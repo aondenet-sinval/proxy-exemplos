@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Frontend teste de proxy</title>
+
+  </head>
+  <body>
+    <h1>Frontend teste de consulta com XMLHttpRequest...</h1>
+    <p>
+      Aperte: shift + control + i
+      e clique em console para ver o resultado da consulta ao servidor via proxy.
+    </p>
+    <div id="result">
+
+    </div>
+    <script type="text/javascript">
+    const showMessage = (message) => {
+    const nodeMessage = document.createElement('p')
+    const textNodeMessage = document.createTextNode(message)
+    nodeMessage.appendChild(textNodeMessage)
+    document.getElementById('result')
+    .appendChild(nodeMessage)
+    }
+    const searchJson = (response)=>{
+      const oResult = JSON.parse(response || '[]')
+      for (var i = 0; i < oResult.length; i++) {
+        // console.log('joinSubtotal ', joinSubtotal);
+        let preco = ((oResult[i].preco).toFixed(2))
+        let subtotal = oResult[i].subtotal
+        let message = `ID: ${oResult[i].id} - descrição ${oResult[i].descricao} -
+        Preço: ${new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(oResult[i].preco)} -
+        Tipo: ${oResult[i].tipo}`
+        showMessage(message)
+      }
+    }
+    const search = ()=>{
+      const url = 'http://localhost:3300/api/servicos'
+      const oReq = new XMLHttpRequest
+
+      oReq.onreadystatechange = function()
+        {
+          if(oReq.readyState == 4)
+          {
+            if(oReq.status == 200)
+
+              console.log("Received: " + oReq.responseText)
+            else
+              console.log("Error code " + oReq.status)
+          }
+          searchJson(oReq.responseText)
+        }
+
+      oReq.open("GET", url, false)
+      oReq.send(null)
+    }
+    search()
+    </script>
+  </body>
+</html>
